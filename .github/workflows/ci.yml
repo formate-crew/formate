@@ -9,9 +9,16 @@ permissions:
   contents: read
 
 jobs:
-  # 필수 체크는 이 잡 하나다(스펙 §8). 영역별 잡이 생기면 needs에 넣는다(T4, M1).
+  harness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: node --version && node --test .claude/hooks/area-guard.test.mjs
+
+  # 필수 체크는 이 잡 하나다(스펙 §8). 영역별 잡이 생기면 needs에 넣는다(M1).
   ci-ok:
     if: always()
+    needs: [harness]
     runs-on: ubuntu-latest
     steps:
       - name: spike 브랜치는 머지하지 않는다 (스펙 §11)
@@ -23,5 +30,10 @@ jobs:
         if: github.base_ref == 'main' && (github.head_ref != 'develop' || github.event.pull_request.head.repo.full_name != github.repository)
         run: |
           echo "::error::main으로 가는 PR의 head는 develop이어야 한다 (스펙 §3.3)"
+          exit 1
+      - name: 앞선 잡 결과 확인 (skipped는 통과)
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: |
+          echo "::error::실패하거나 취소된 잡이 있다: ${{ join(needs.*.result, ', ') }}"
           exit 1
       - run: echo "ci-ok"
