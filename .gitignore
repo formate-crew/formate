@@ -1,0 +1,20 @@
+# 의존성·빌드
+node_modules/
+dist/
+build/
+.gradle/
+# 비밀값
+.env
+.env.*
+!.env.example
+# 공개 레포에 올리지 않는 로컬 자료 (T0-3, T0-5)
+docs/research/
+*.zip
+# Claude Code
+.claude/settings.local.json
+.claude/worktrees/
+# 스파이크 산출물 (T8~T10)
+spike-assets/
+# OS
+.DS_Store
+Thumbs.db

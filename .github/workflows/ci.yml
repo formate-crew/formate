@@ -1,0 +1,27 @@
+name: ci
+
+on:
+  pull_request:
+    # edited: PR의 base를 바꿔도 가드를 다시 돌린다
+    types: [opened, synchronize, reopened, edited]
+
+permissions:
+  contents: read
+
+jobs:
+  # 필수 체크는 이 잡 하나다(스펙 §8). 영역별 잡이 생기면 needs에 넣는다(T4, M1).
+  ci-ok:
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: spike 브랜치는 머지하지 않는다 (스펙 §11)
+        if: startsWith(github.head_ref, 'spike/')
+        run: |
+          echo "::error::spike/* 브랜치는 develop에 머지하지 않는다 (스펙 §11)"
+          exit 1
+      - name: 릴리스 PR의 head는 이 레포의 develop만 (스펙 §3.3)
+        if: github.base_ref == 'main' && (github.head_ref != 'develop' || github.event.pull_request.head.repo.full_name != github.repository)
+        run: |
+          echo "::error::main으로 가는 PR의 head는 develop이어야 한다 (스펙 §3.3)"
+          exit 1
+      - run: echo "ci-ok"
