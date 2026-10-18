@@ -7,6 +7,7 @@ import { LogPanel, log } from './log'
 import Sp1 from './sp1'
 import Sp2 from './sp2'
 import Sp3 from './sp3'
+import Sp4 from './sp4'
 
 addEventListener('error', (e) => log(`오류: ${e.message}`))
 addEventListener('unhandledrejection', (e) => log(`처리 안 된 거부: ${String(e.reason)}`))
@@ -18,6 +19,7 @@ const pages: Record<string, [string, ComponentType]> = {
   '1': ['SP-1 파일·재생·화면 유지', Sp1],
   '2': ['SP-2 외부 브라우저로 열기', Sp2],
   '3': ['SP-3 싱크 정확도', Sp3],
+  '4': ['SP-4 카카오 로그인', Sp4],
 }
 
 function App() {
