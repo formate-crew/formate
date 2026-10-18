@@ -4,6 +4,7 @@ import type { ComponentType } from 'react'
 import { createRoot } from 'react-dom/client'
 import EnvCheck from './env-check'
 import { LogPanel, log } from './log'
+import Sp1 from './sp1'
 
 addEventListener('error', (e) => log(`오류: ${e.message}`))
 addEventListener('unhandledrejection', (e) => log(`처리 안 된 거부: ${String(e.reason)}`))
@@ -11,7 +12,9 @@ const params = new URLSearchParams(location.search)
 if (params.has('debug')) void import('eruda').then((m) => m.default.init())
 
 // 스파이크 페이지를 만들 때마다 한 줄씩 더한다(T8~T13).
-const pages: Record<string, [string, ComponentType]> = {}
+const pages: Record<string, [string, ComponentType]> = {
+  '1': ['SP-1 파일·재생·화면 유지', Sp1],
+}
 
 function App() {
   const entry = pages[params.get('sp') ?? '']
