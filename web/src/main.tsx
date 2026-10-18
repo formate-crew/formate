@@ -9,6 +9,7 @@ import Sp2 from './sp2'
 import Sp3 from './sp3'
 import Sp4 from './sp4'
 import Sp5Stage from './sp5-stage'
+import Sp5Timeline from './sp5-timeline'
 
 addEventListener('error', (e) => log(`오류: ${e.message}`))
 addEventListener('unhandledrejection', (e) => log(`처리 안 된 거부: ${String(e.reason)}`))
@@ -22,6 +23,7 @@ const pages: Record<string, [string, ComponentType]> = {
   '3': ['SP-3 싱크 정확도', Sp3],
   '4': ['SP-4 카카오 로그인', Sp4],
   '5a': ['SP-5a 무대 손맛', Sp5Stage],
+  '5b': ['SP-5b 타임라인 제스처·저장 시간', Sp5Timeline],
 }
 
 function App() {
